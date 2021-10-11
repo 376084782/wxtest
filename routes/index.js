@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 import ModelUser1 from '../models/ModelUser1'
 
+let AppID = 'wx4d71fdfe9622167d'
+let AppSecret = '00abd04e8172440382107dc48011740a'
 
 var request = require('request');
 const crypto = require('crypto'); // node内置的加密模块
@@ -30,7 +32,6 @@ function wechatAuth(req, res) {
 }
 
 router.get('/getCode', (req, res) => {
-  let AppID = 'wx4d71fdfe9622167d'
   var return_uri = encodeURIComponent('http://192.168.10.103:8081/malasong/index.html')
   var scoped = 'snsapi_userinfo'
   var state = '123'
@@ -39,8 +40,7 @@ router.get('/getCode', (req, res) => {
 })
 
 router.get('/getAccessToken', function (req, res) {
-  let AppID = 'wx4d71fdfe9622167d'
-  code = req.query.code
+  let code = req.query.code
   console.log('得到授权码code：', code);
   request.get({
       url: 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + AppID + '&secret=' + AppSecret + '&code=' + code + '&grant_type=authorization_code'
@@ -55,12 +55,7 @@ router.get('/getAccessToken', function (req, res) {
           }, // 调用获取用户信息的api
           function (error, response, body) {
             var userinfo = JSON.parse(body);
-            console.log(userinfo)
-            res.send("\
-                          <h1>" + userinfo.nickname + " 的个人信息</h1>\
-                          <p><img src='" + userinfo.headimgurl + "' /></p>\
-                          <p>" + userinfo.city + "，" + userinfo.province + "，" + userinfo.country + "</p>\
-                      ");
+            res.send(userinfo);
           }
         )
       }
