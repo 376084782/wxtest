@@ -31,7 +31,7 @@ function wechatAuth(req, res) {
 
 router.get('/getCode', (req, res) => {
   let AppID = 'wx4d71fdfe9622167d'
-  var return_uri = 'http://127.0.0.1:8080/wx/getAccessToken'
+  var return_uri = 'http://127.0.0.1:7001/wx/getAccessToken'
   var scoped = 'snsapi_userinfo'
   var state = '123'
   res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')
