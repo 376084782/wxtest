@@ -31,7 +31,7 @@ function wechatAuth(req, res) {
 
 router.get('/getCode', (req, res) => {
   let AppID = 'wx4d71fdfe9622167d'
-  var return_uri = encodeURI('http://192.168.10.103:8081/malasong')
+  var return_uri = encodeURIComponent('http://192.168.10.103:8081/malasong/index.html')
   var scoped = 'snsapi_userinfo'
   var state = '123'
   console.log('进入跳转', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')
