@@ -23,9 +23,9 @@ function getSignature(param) {
   return sha1.digest("hex");
 }
 router.get('/jssdk', (req, res) => {
+  let url = req.query.url;
   const timestamp = Math.floor(new Date().getTime() / 1000);
   const noncestr = "XXXXXXXX";
-  const url = encodeURIComponent('http://192.168.10.103:8081/malasong/index.html')
   getAccessToken().then(data => {
     get_jsapi_ticket(data.access_token).then(jsapi_ticket => {
       const signature = getSignature({
