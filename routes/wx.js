@@ -46,7 +46,7 @@ router.get('/getCode', (req, res) => {
   console.log('进入跳转', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')
   res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')
 })
-router.get('/getAccessToken', function (req, res) {
+router.get('/getUserInfo', function (req, res) {
   let AppID = config.appid;
   let AppSecret = config.appsecret;
   let code = req.query.code;
