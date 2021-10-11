@@ -34,10 +34,12 @@ router.get('/getCode', (req, res) => {
   var return_uri = 'http://127.0.0.1:7001/wx/getAccessToken'
   var scoped = 'snsapi_userinfo'
   var state = '123'
+  console.log('进入跳转', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')
   res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')
 })
 
 router.get('/getAccessToken', function (req, res) {
+  let AppID = 'wx4d71fdfe9622167d'
   code = req.query.code
   console.log('得到授权码code：', code);
   request.get({
