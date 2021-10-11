@@ -6,6 +6,7 @@ var logger = require('morgan');
 import ModelUser1 from './models/ModelUser1'
 
 import indexRouter from './routes/index'
+import wxRouter from './routes/wx'
 import AdminRouter from './routes/admin'
 
 var app = express();
@@ -35,7 +36,8 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/wx', indexRouter);
+app.use('/web', indexRouter);
+app.use('/wx', wxRouter);
 app.use('/admin', AdminRouter);
 
 // catch 404 and forward to error handler
