@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const config = require('../config/index.json'); // 配置数据
+const axios = require('axios'); // 请求api
 
 // 微信配置
 
@@ -22,6 +23,26 @@ function getSignature(param) {
   sha1.update(str);
   return sha1.digest("hex");
 }
+router.get('/downimg', (req, res) => {
+  let media_id = req.query.media_id;
+  getAccessToken().then(data => {
+    axios.get(`https://api.weixin.qq.com/cgi-bin/media/get?access_token=${data.access_token}&media_id=${media_id}`, {
+      responseType: 'arraybuffer'
+    }).then(response => {
+      res.send({
+        code: 0,
+        data: 'data:image/png;base64,' + response.data.toString('base64'),
+        message: ''
+      })
+    }).catch(err => {
+      console.log(err)
+      res.send({
+        code: -1,
+        message: '失败'
+      })
+    });
+  })
+});
 router.get('/jssdk', (req, res) => {
   let url = req.query.url;
   const timestamp = Math.floor(new Date().getTime() / 1000);
