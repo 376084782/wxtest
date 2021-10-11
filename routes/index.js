@@ -17,7 +17,7 @@ function wechatAuth(req, res) {
   let echostr = req.query.echostr;
   let timestamp = req.query.timestamp;
   let nonce = req.query.nonce;
-  let reqArray = [nonce, timestamp, token];
+  let reqArray = [nonce, timestamp, '1'];
   reqArray.sort(); //对数组进行字典排序
   let sortStr = reqArray.join(''); //连接数组
   let sha1Str = sha1(sortStr.toString().replace(/,/g, ""));
