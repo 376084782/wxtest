@@ -1,5 +1,6 @@
 import excelPort from 'node-xlsx';
 import ModelUser1 from '../models/ModelUser1'
+import ModelHaibao from '../models/ModelHaibao';
 var express = require('express');
 var router = express.Router();
 var fs = require('fs')
@@ -52,18 +53,9 @@ router.post('/user/insert/multi', async (req, res, next) => {
   }); //数据返回前端
 });
 
-function writeExcel(datas) {
+function writeExcel(datas, map) {
 
   let sheetData = [];
-  let map = {
-    name: '姓名',
-    sex: '性别',
-    birth: '生日',
-    number: '号码',
-    content: '烫印内容',
-    order: '订单号',
-    phone:'手机号'
-  }
   // 写入表头
   let colTitle = [];
   for (let key in map) {
@@ -88,7 +80,49 @@ function writeExcel(datas) {
 }
 router.get('/user/excel', async (req, res, next) => {
   let list = await ModelUser1.find({});
-  let file = writeExcel(list)
+  let file = writeExcel(list, {
+    openid: '微信openid',
+    nickname: '微信昵称',
+    phone: '手机号',
+    name: '姓名',
+    number: '身份证',
+    content: '烫印内容',
+    order: '订单号',
+  })
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader("Content-Disposition", "attachment; filename=" + "list.xlsx");
+  res.send(file);
+});
+
+
+router.get('/haibao/list', async (req, res, next) => {
+  let data = req.query;
+  let page = +data.page || 1;
+  let size = +data.size || 20;
+  let list = await ModelHaibao.find({}).sort({
+    "ID": 1
+  }).skip(size * (page - 1)).limit(size);
+  let total = await ModelHaibao.find({}).countDocuments()
+  res.json({
+    code: 0,
+    data: {
+      list,
+      pageConfig: {
+        page,
+        size,
+        total: Math.ceil(total / size)
+      }
+    }
+  }); //数据返回前端
+});
+
+router.get('/haibao/excel', async (req, res, next) => {
+  let list = await ModelHaibao.find({});
+  let file = writeExcel(list, {
+    openid: '微信openid',
+    nickname: '微信昵称',
+    content: '宣言',
+  })
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   res.setHeader("Content-Disposition", "attachment; filename=" + "list.xlsx");
   res.send(file);
