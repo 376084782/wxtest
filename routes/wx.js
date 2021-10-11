@@ -6,9 +6,7 @@ const config = require('../config/index.json'); // 配置数据
 
 var request = require('request');
 const crypto = require('crypto'); // node内置的加密模块
-import {
-  getAccessToken
-} from '../util/accessToken'
+import getAccessToken from '../util/accessToken'
 
 
 function sha1(str) {
