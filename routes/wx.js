@@ -23,7 +23,7 @@ function getSignature(param) {
   sha1.update(str);
   return sha1.digest("hex");
 }
-router.get('/downimg', (req, res) => {
+router.get('/saveImg', (req, res) => {
   let media_id = req.query.media_id;
   getAccessToken().then(data => {
     axios.get(`https://api.weixin.qq.com/cgi-bin/media/get?access_token=${data.access_token}&media_id=${media_id}`, {

@@ -1,7 +1,24 @@
 var express = require('express');
 var router = express.Router();
 import ModelUser1 from '../models/ModelUser1'
+import ModelHaibao from '../models/ModelHaibao'
 
+router.post('/haibao', async (req, res, next) => {
+  let data = req.body;
+  await ModelHaibao.insertMany([{
+    content: data.content,
+    openid: data.openid,
+    nickname: data.nickname
+  }], {
+    writeConcern: 0,
+  })
+  res.json({
+    code: 0,
+    data: {},
+    message: '提交成功'
+  });
+
+});
 router.post('/doSubmit', async (req, res, next) => {
   let data = req.body;
   let dataDB = await ModelUser1.findOne({
@@ -20,7 +37,9 @@ router.post('/doSubmit', async (req, res, next) => {
       number: data.number,
       content: data.content,
       order: order,
-      phone: data.phone
+      phone: data.phone,
+      openid: data.openid,
+      nickname: data.nickname
     }], {
       writeConcern: 0,
     })
