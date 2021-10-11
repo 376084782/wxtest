@@ -21,8 +21,9 @@ router.post('/haibao', async (req, res, next) => {
 });
 router.post('/doSubmit', async (req, res, next) => {
   let data = req.body;
+  // 每个手机限定一个
   let dataDB = await ModelUser1.findOne({
-    number: '' + data.number,
+    phone: '' + data.phone,
   })
   if (dataDB) {
     res.json({
