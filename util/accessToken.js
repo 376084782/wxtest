@@ -19,12 +19,12 @@ module.exports = function getAccessToken(res) {
           access_token: cacheValue,
           from: 'cache'
         });
-        res(result);
+        rsv(result);
       } else {
         // 调取微信api
         axios.get(fetchUrl).then(response => {
           let json = CircularJSON.stringify(response.data);
-          res(json);
+          rsv(json);
           // 设置缓存
           if (response.data.access_token) {
             cache.setCache('access_token', response.data.access_token)
