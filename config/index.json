@@ -1,4 +1,5 @@
 {
   "appid":"wx4d71fdfe9622167d",
-  "appsecret":"00abd04e8172440382107dc48011740a"
+  "appsecret":"00abd04e8172440382107dc48011740a",
+  "getJsapiTicket":"https://api.weixin.qq.com/cgi-bin/ticket/getticket"
 }

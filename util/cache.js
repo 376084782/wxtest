@@ -20,19 +20,15 @@ var setCache = function (key, value) {
 // 获取缓存
 var getCache = function (key, callback) {
   // 读取缓存
-  myCache.get(key, function (err, value) {
-    if (!err) {
-      if (value) {
-        console.log(`存在于缓存中${key}=${value}`);
-        callback(value);
-      } else {
-        console.log(`${key} not found in node-cache`);
-        callback();
-      }
-    } else {
-      console.log('get ' + key + ' cache occurs error =', err);
-    }
-  });
+  let value = myCache.get(key, true);
+  console.log(value, '读取缓存')
+  if (value) {
+    console.log(`存在于缓存中${key}=${value}`);
+    callback(value);
+  } else {
+    console.log(`${key} not found in node-cache`);
+    callback();
+  }
 };
 
 
@@ -41,4 +37,3 @@ module.exports = {
   setCache,
   getCache
 }
-

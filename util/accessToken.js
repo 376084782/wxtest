@@ -8,6 +8,7 @@ const cache = require('./cache');
 
 module.exports = function getAccessToken(res) {
   return new Promise(rsv => {
+    console.log('开始获取')
     const fetchUrl = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.appid}&secret=${config.appsecret}`;
     // console.log(fetchUrl, config);
 
@@ -15,16 +16,15 @@ module.exports = function getAccessToken(res) {
     cache.getCache('access_token', function (cacheValue) {
       // 缓存存在
       if (cacheValue) {
-        const result = CircularJSON.stringify({
+        const result = {
           access_token: cacheValue,
           from: 'cache'
-        });
+        };
         rsv(result);
       } else {
         // 调取微信api
         axios.get(fetchUrl).then(response => {
-          let json = CircularJSON.stringify(response.data);
-          rsv(json);
+          rsv(response.data);
           // 设置缓存
           if (response.data.access_token) {
             cache.setCache('access_token', response.data.access_token)

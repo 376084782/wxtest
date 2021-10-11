@@ -7,6 +7,7 @@ const config = require('../config/index.json'); // 配置数据
 var request = require('request');
 const crypto = require('crypto'); // node内置的加密模块
 import getAccessToken from '../util/accessToken'
+import get_jsapi_ticket from '../util/jsapiTicket'
 
 
 function sha1(str) {
@@ -14,9 +15,47 @@ function sha1(str) {
   return shasum.update(str, 'utf-8').digest("hex");
 }
 
+function getSignature(param) {
+  let sha1 = crypto.createHash("sha1");
+  // param为{ timestamp, jsapi_ticket, noncestr, url }
+  let str = Object.keys(param).sort().map((key) => `${key}=${param[key]}`).join('&');
+  sha1.update(str);
+  return sha1.digest("hex");
+}
+router.get('/jssdk', (req, res) => {
+  const timestamp = Math.floor(new Date().getTime() / 1000);
+  const noncestr = "XXXXXXXX";
+  const url = encodeURIComponent('http://192.168.10.103:8081/malasong/index.html')
+  getAccessToken().then(data => {
+    get_jsapi_ticket(data.access_token).then(jsapi_ticket => {
+      const signature = getSignature({
+        timestamp,
+        noncestr,
+        url,
+        jsapi_ticket,
+      });
+      res.send({
+        code: 0,
+        data: {
+          url,
+          jsapi_ticket,
+          timestamp,
+          noncestr,
+          signature,
+          appid: config.appid
+        },
+        message: ''
+      });
+    })
+  })
+});
 router.get('/getAccessToken', (req, res) => {
-  getAccessToken().then(token => {
-    console.log(token, 'tokenkkk')
+  getAccessToken().then(data => {
+    res.send({
+      code: 0,
+      data,
+      message: ''
+    });
   })
 });
 
@@ -41,7 +80,6 @@ router.get('/getCode', (req, res) => {
   var return_uri = encodeURIComponent('http://192.168.10.103:8081/malasong/index.html')
   var scoped = 'snsapi_userinfo'
   var state = '123'
-  console.log('进入跳转', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')
   res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')
 })
 router.get('/getUserInfo', function (req, res) {
