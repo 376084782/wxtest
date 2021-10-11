@@ -1,18 +1,26 @@
 var express = require('express');
 var router = express.Router();
+const config = require('../config/index.json'); // 配置数据
 
 // 微信配置
-let AppID = 'wx4d71fdfe9622167d'
-let AppSecret = '00abd04e8172440382107dc48011740a'
 
 var request = require('request');
 const crypto = require('crypto'); // node内置的加密模块
+import {
+  getAccessToken
+} from '../util/accessToken'
 
 
 function sha1(str) {
   let shasum = crypto.createHash("sha1");
   return shasum.update(str, 'utf-8').digest("hex");
 }
+
+router.get('/getAccessToken', (req, res) => {
+  getAccessToken().then(token => {
+    console.log(token, 'tokenkkk')
+  })
+});
 
 router.get('/token', (req, res) => {
   let signature = req.query.signature;
@@ -31,6 +39,7 @@ router.get('/token', (req, res) => {
   }
 });
 router.get('/getCode', (req, res) => {
+  let AppID = config.appid
   var return_uri = encodeURIComponent('http://192.168.10.103:8081/malasong/index.html')
   var scoped = 'snsapi_userinfo'
   var state = '123'
@@ -38,7 +47,9 @@ router.get('/getCode', (req, res) => {
   res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')
 })
 router.get('/getAccessToken', function (req, res) {
-  let code = req.query.code
+  let AppID = config.appid;
+  let AppSecret = config.appsecret;
+  let code = req.query.code;
   request.get({
       url: 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + AppID + '&secret=' + AppSecret + '&code=' + code + '&grant_type=authorization_code'
     }, // 请求获取令牌
