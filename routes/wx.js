@@ -44,7 +44,7 @@ router.get('/saveImg', (req, res) => {
   })
 });
 router.get('/jssdk', (req, res) => {
-  let url = req.query.url;
+  let url = 'http://192.168.10.101:8080/malasong/index.html';
   const timestamp = Math.floor(new Date().getTime() / 1000);
   const noncestr = "XXXXXXXX";
   getAccessToken().then(data => {
