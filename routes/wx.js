@@ -45,7 +45,7 @@ router.get('/saveImg', (req, res) => {
 });
 router.get('/jssdk', (req, res) => {
   let url = req.query.url;
-  
+
   const timestamp = Math.floor(new Date().getTime() / 1000);
   const noncestr = "XXXXXXXX";
   getAccessToken().then(data => {
