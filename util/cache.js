@@ -10,11 +10,7 @@ const myCache = new NodeCache({
 // 设置缓存
 var setCache = function (key, value) {
   // 设置缓存
-  myCache.set(key, value, function (err, success) {
-    if (!err && success) {
-      console.log(key + "保存成功", value);
-    }
-  });
+  myCache.set(key, value, 7200);
 };
 
 // 获取缓存
