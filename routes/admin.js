@@ -44,8 +44,8 @@ router.post('/user/insert/multi', async (req, res, next) => {
   await ModelUser1.deleteMany({})
   await ModelUser1.insertMany(
     data.list, {
-      writeConcern: 0,
-    }
+    writeConcern: 0,
+  }
   )
   res.json({
     code: 0,
@@ -78,6 +78,15 @@ function writeExcel(datas, map) {
   let file = excelPort.build(xlsxObj);
   return file;
 }
+
+router.get('/user/clear', async (req, res, next) => {
+  await ModelUser1.deleteMany()
+  res.json({
+    code: 0,
+    data: {}
+  }); //数据返回前端
+});
+
 router.get('/user/excel', async (req, res, next) => {
   let list = await ModelUser1.find({});
   let file = writeExcel(list, {
@@ -113,6 +122,14 @@ router.get('/haibao/list', async (req, res, next) => {
         total: Math.ceil(total / size)
       }
     }
+  }); //数据返回前端
+});
+
+router.get('/haibao/clear', async (req, res, next) => {
+  await ModelHaibao.deleteMany()
+  res.json({
+    code: 0,
+    data: {}
   }); //数据返回前端
 });
 
