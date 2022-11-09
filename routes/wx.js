@@ -25,16 +25,19 @@ function getSignature(param) {
 }
 router.get('/saveImg', (req, res) => {
   let media_id = req.query.media_id;
+    	console.log('获取微信图')
   getAccessToken().then(data => {
     axios.get(`https://api.weixin.qq.com/cgi-bin/media/get?access_token=${data.access_token}&media_id=${media_id}`, {
       responseType: 'arraybuffer'
     }).then(response => {
+    	console.log('收到微信图')
       res.send({
         code: 0,
         data: 'data:image/png;base64,' + response.data.toString('base64'),
         message: ''
       })
     }).catch(err => {
+    	console.log('收到微信图失败了')
       console.log(err)
       res.send({
         code: -1,
@@ -99,7 +102,7 @@ router.get('/token', (req, res) => {
 });
 router.get('/getCode', (req, res) => {
   let AppID = config.appid
-  var return_uri = encodeURIComponent('http://oss.yipeng.online/malasong/index.html')
+  var return_uri = encodeURIComponent('http://oss.yipeng.online/mls20221107/index.html')
   var scoped = 'snsapi_userinfo'
   var state = '123'
   res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + AppID + '&redirect_uri=' + return_uri + '&response_type=code&scope=' + scoped + '&state=' + state + '#wechat_redirect')

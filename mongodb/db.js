@@ -5,11 +5,13 @@ import config from 'config-lite';
 import chalk from 'chalk';
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://127.0.0.1:27017/malasong', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
+ mongoose.connect("mongodb://39.101.162.107:20017/", {
+   dbName: 'mls20221105',
+   user: "root",
+   pass: "123456",
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+ });
 const db = mongoose.connection;
 
 db.once('open', () => {

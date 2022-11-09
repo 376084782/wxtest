@@ -106,7 +106,7 @@ router.post('/login', async (req, res, next) => {
   } else {
     res.json({
       code: 9999,
-      message: '您信息填写有误或未报名此次活动1'
+      message: '您信息填写有误或未报名此次活动'
     });
   }
 });
